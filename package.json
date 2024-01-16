@@ -1,0 +1,16 @@
+{
+  "name": "yt-server",
+  "version": "1.0.0",
+  "description": "youtube backend",
+  "main": "index.js",
+  "author": "Sahil",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "prettier": "^3.2.2"
+  }
+}
