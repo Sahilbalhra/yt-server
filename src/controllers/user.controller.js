@@ -44,6 +44,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User with email email or username already exists");
   }
   const avatarLocalpath = req.files?.avatar?.[0]?.path;
+
   let coverImageLocalPath;
   if (
     req.files &&
@@ -88,7 +89,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
 
-  if (!username && !email) {
+  if (!(username || email)) {
     throw new ApiError(400, "Username or email is required");
   }
 
@@ -130,10 +131,10 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  await UserModel.findByIdAndUpdate(
+  const user = await UserModel.findByIdAndUpdate(
     req.user?._id,
     {
-      $set: { refreshToken: undefined },
+      $unset: { refreshToken: 1 },
     },
     {
       new: true,
@@ -146,7 +147,8 @@ const logoutUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options);
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "User logged Out"));
 });
 
 export { registerUser, loginUser, logoutUser };
