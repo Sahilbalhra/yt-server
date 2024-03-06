@@ -11,9 +11,9 @@ connectDB()
     app.on("error",(error)=>{
         console.error("Error with app :",error)
     })
-    const port=process.env.PORT||8080
+    const port=process.env.PORT
     app.listen(port,()=>{
-        console.info('listening on port ',process.env.port)
+        console.info('listening on port',process.env.PORT)
     })
 })
 .catch((err)=>{
